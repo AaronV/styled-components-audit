@@ -8,6 +8,8 @@ var path_1 = __importDefault(require("path"));
 var fs_1 = require("fs");
 var promises_1 = require("fs/promises");
 var types_1 = require("./types");
+var _a = process.argv, args = _a.slice(2);
+var rootDirectory = args[0] || './src';
 /**
  * `styled` element regex
  * Group 1 is the component type. "." for html-element, "(" for custom-element.
@@ -72,7 +74,7 @@ function scanBufferForStyledComponents(fileName, buffer) {
         details: specificResults,
     };
 }
-var files = getFileList('./src');
+var files = getFileList(rootDirectory);
 // Scan all found files
 Promise.all(files.map(function (fileName) {
     return promises_1.readFile(fileName).then(function (buffer) { return scanBufferForStyledComponents(fileName, buffer); });

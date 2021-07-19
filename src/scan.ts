@@ -5,6 +5,9 @@ import { readdirSync, statSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { ElementType, fileScanResult } from './types';
 
+const [,, ...args] = process.argv;
+const rootDirectory = args[0] || './src';
+
 /**
  * `styled` element regex
  * Group 1 is the component type. "." for html-element, "(" for custom-element.
@@ -77,7 +80,7 @@ function scanBufferForStyledComponents(fileName: string, buffer: Buffer): fileSc
   };
 }
 
-const files = getFileList('./src');
+const files = getFileList(rootDirectory);
 
 // Scan all found files
 Promise.all(
