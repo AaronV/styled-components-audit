@@ -4,6 +4,10 @@
   "description": "Audit your project for `styled` uses to help find code-duplication and refactoring opportunities.",
   "author": "Aaron Vanderpoel <aaron.vanderpoel@gmail.com>",
   "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@types/node": "^16.3.3",
     "path": "^0.12.7",
