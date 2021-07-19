@@ -1,5 +1,5 @@
+#!/usr/bin/env node
 "use strict";
-// Run from root with `nodemon scripts/StyledComponentsScanner/scan.ts --exec "ts-node scripts/StyledComponentsScanner/scan.ts"`
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

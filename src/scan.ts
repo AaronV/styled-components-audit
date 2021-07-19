@@ -1,4 +1,4 @@
-// Run from root with `nodemon scripts/StyledComponentsScanner/scan.ts --exec "ts-node scripts/StyledComponentsScanner/scan.ts"`
+#!/usr/bin/env node
 
 import path from 'path';
 import { readdirSync, statSync } from 'fs';
