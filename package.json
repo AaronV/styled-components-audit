@@ -1,10 +1,11 @@
 {
-  "name": "styled-components-audit",
+  "name": "styled-components-auditor",
   "version": "0.1.0",
   "description": "Audit your project for `styled` uses to help find code-duplication and refactoring opportunities.",
   "author": "Aaron Vanderpoel <aaron.vanderpoel@gmail.com>",
   "license": "MIT",
   "type": "commonjs",
+  "repository": "https://github.com/AaronV/styled-components-auditor",
   "scripts": {
     "build": "tsc && chmod +x ./build/scan.js",
     "example": "node ./src/scan.js ./example",
