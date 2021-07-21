@@ -3,7 +3,7 @@
 import { readdirSync, statSync } from "fs";
 import { readFile } from "fs/promises";
 import path from "path";
-import { ElementType, fileScanResult } from "./types";
+import { ElementType, iFileScanResult, tDetail } from "./types";
 
 const [, , ...args] = process.argv;
 const rootDirectory = args[0] || "./src";
@@ -45,7 +45,7 @@ function getFileList(dirPath: string, arrayOfFiles: string[] = []): string[] {
 function scanBufferForStyledComponents(
   fileName: string,
   buffer: Buffer
-): fileScanResult {
+): iFileScanResult {
   const content = buffer.toString();
   let htmlElementsRestyled = 0;
   let customElementsRestyled = 0;
@@ -112,10 +112,18 @@ Promise.all(
     });
   });
 
-  // Build a multi-file result
+  const detailsArray: tDetail[] = Object.keys(specificObjects).map((key) => [
+    key,
+    specificObjects[key],
+  ]);
+  const sortedDetailsArray = detailsArray.sort((a) => -a[1]);
+
+  // Output Results
   console.log(`${fileScanResults.length} files scanned`);
   console.log(`Native elements restyled: ${totalHtmlElementCount}`);
   console.log(`Custom elements restyled: ${totalCustomElementCount}`);
-  console.log("Details...");
-  console.log(specificObjects);
+  console.log("Details:");
+  sortedDetailsArray.forEach((detail) => {
+    console.log(`  ${detail[0]}: ${detail[1]}`);
+  });
 });

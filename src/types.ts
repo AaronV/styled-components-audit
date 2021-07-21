@@ -1,4 +1,4 @@
-export interface fileScanResult {
+export interface iFileScanResult {
   filename: string;
   htmlElementCount: number;
   customElementCount: number;
@@ -9,3 +9,5 @@ export enum ElementType {
   HTML,
   Custom,
 }
+
+export type tDetail = [string, number];
