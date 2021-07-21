@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var path_1 = __importDefault(require("path"));
 var fs_1 = require("fs");
 var promises_1 = require("fs/promises");
+var path_1 = __importDefault(require("path"));
 var types_1 = require("./types");
 var _a = process.argv, args = _a.slice(2);
-var rootDirectory = args[0] || './src';
+var rootDirectory = args[0] || "./src";
 /**
  * `styled` element regex
  * Group 1 is the component type. "." for html-element, "(" for custom-element.
@@ -28,8 +28,8 @@ function getFileList(dirPath, arrayOfFiles) {
         }
         else {
             var ext = path_1.default.extname(dirPath + "/" + fileName);
-            if (ext === '.js' || ext === '.ts' || ext === '.tsx') {
-                arrayOfFiles.push(path_1.default.join(dirPath, '/', fileName));
+            if (ext === ".js" || ext === ".ts" || ext === ".tsx") {
+                arrayOfFiles.push(path_1.default.join(dirPath, "/", fileName));
             }
         }
     });
@@ -48,7 +48,7 @@ function scanBufferForStyledComponents(fileName, buffer) {
     var specificResults = {};
     var match = findStyledUsesRegex.exec(content);
     while (match != null) {
-        var elementType = match[1] === '.' ? types_1.ElementType.HTML : types_1.ElementType.Custom;
+        var elementType = match[1] === "." ? types_1.ElementType.HTML : types_1.ElementType.Custom;
         var elementName = match[2];
         // Increment general match
         if (elementType === types_1.ElementType.HTML) {
@@ -77,26 +77,37 @@ function scanBufferForStyledComponents(fileName, buffer) {
 var files = getFileList(rootDirectory);
 // Scan all found files
 Promise.all(files.map(function (fileName) {
-    return promises_1.readFile(fileName).then(function (buffer) { return scanBufferForStyledComponents(fileName, buffer); });
+    return promises_1.readFile(fileName).then(function (buffer) {
+        return scanBufferForStyledComponents(fileName, buffer);
+    });
 })).then(function (fileScanResults) {
     var totalHtmlElementCount = 0;
     var totalCustomElementCount = 0;
     var specificObjects = {};
+    // Go over each result, and count up totals
     fileScanResults.forEach(function (scanResult) {
         totalHtmlElementCount += scanResult.htmlElementCount;
         totalCustomElementCount += scanResult.customElementCount;
         Object.keys(scanResult.details).forEach(function (key) {
             if (Object.keys(specificObjects).includes(key)) {
-                specificObjects[key] += 1;
+                specificObjects[key] += scanResult.details[key];
             }
             else {
-                specificObjects[key] = 1;
+                specificObjects[key] = scanResult.details[key];
             }
         });
     });
-    // Build a multi-file result
+    var detailsArray = Object.keys(specificObjects).map(function (key) { return [
+        key,
+        specificObjects[key],
+    ]; });
+    var sortedDetailsArray = detailsArray.sort(function (a) { return -a[1]; });
+    // Output Results
     console.log(fileScanResults.length + " files scanned");
-    console.log("Found " + totalHtmlElementCount + " native HTML elements restyled");
-    console.log("Found " + totalCustomElementCount + " custom elements restyled");
-    console.log(specificObjects);
+    console.log("Native elements restyled: " + totalHtmlElementCount);
+    console.log("Custom elements restyled: " + totalCustomElementCount);
+    console.log("Details:");
+    sortedDetailsArray.forEach(function (detail) {
+        console.log("  " + detail[0] + ": " + detail[1]);
+    });
 });
