@@ -1,6 +1,6 @@
 {
   "name": "styled-components-auditor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Audit your project for `styled` uses to help find code-duplication and refactoring opportunities.",
   "author": "Aaron Vanderpoel <aaron.vanderpoel@gmail.com>",
   "license": "MIT",
