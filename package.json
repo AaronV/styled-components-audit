@@ -8,7 +8,7 @@
   "repository": "https://github.com/AaronV/styled-components-auditor",
   "scripts": {
     "build": "tsc && chmod +x ./build/scan.js",
-    "example": "node ./src/scan.js ./example",
+    "example": "node ./build/scan.js ./example",
     "dev": "nodemon ./src/scan.ts"
   },
   "bin": {

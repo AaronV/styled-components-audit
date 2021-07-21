@@ -28,7 +28,7 @@ function getFileList(dirPath, arrayOfFiles) {
         }
         else {
             var ext = path_1.default.extname(dirPath + "/" + fileName);
-            if (ext === '.js' || ext === '.tsx') {
+            if (ext === '.js' || ext === '.ts' || ext === '.tsx') {
                 arrayOfFiles.push(path_1.default.join(dirPath, '/', fileName));
             }
         }

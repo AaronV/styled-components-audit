@@ -27,7 +27,7 @@ function getFileList(dirPath: string, arrayOfFiles: string[] = []): string[] {
       arrayOfFiles = getFileList(`${dirPath}/${fileName}`, arrayOfFiles);
     } else {
       const ext = path.extname(`${dirPath}/${fileName}`);
-      if (ext === '.js' || ext === '.tsx') {
+      if (ext === '.js' || ext === '.ts' || ext === '.tsx') {
         arrayOfFiles.push(path.join(dirPath, '/', fileName));
       }
     }
