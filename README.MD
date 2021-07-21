@@ -16,9 +16,11 @@ Root directory defaults to `./src`
 2 files scanned
 Native elements restyled: 3
 Custom elements restyled: 2
-Details...
-{ h1: 1, h2: 1, button: 1, Button: 2 }
-
+Details:
+  Button: 2
+  button: 1
+  h2: 1
+  h1: 1
 ```
 
 ## Try it yourself
