@@ -13,10 +13,12 @@ Root directory defaults to `./src`
 ## Example Output
 
 ```
-7 files scanned
-Found 4 native HTML elements restyled
-Found 2 custom elements restyled
-{ h1: 1, h2: 3, CustomComponent: 2 }
+2 files scanned
+Native elements restyled: 3
+Custom elements restyled: 2
+Details...
+{ h1: 1, h2: 1, button: 1, Button: 2 }
+
 ```
 
 ## Try it yourself

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import path from 'path';
-import { readdirSync, statSync } from 'fs';
-import { readFile } from 'fs/promises';
-import { ElementType, fileScanResult } from './types';
+import { readdirSync, statSync } from "fs";
+import { readFile } from "fs/promises";
+import path from "path";
+import { ElementType, fileScanResult } from "./types";
 
-const [,, ...args] = process.argv;
-const rootDirectory = args[0] || './src';
+const [, , ...args] = process.argv;
+const rootDirectory = args[0] || "./src";
 
 /**
  * `styled` element regex
@@ -22,13 +22,13 @@ function getFileList(dirPath: string, arrayOfFiles: string[] = []): string[] {
 
   arrayOfFiles = arrayOfFiles || [];
 
-  dirContents.forEach(fileName => {
+  dirContents.forEach((fileName) => {
     if (statSync(`${dirPath}/${fileName}`).isDirectory()) {
       arrayOfFiles = getFileList(`${dirPath}/${fileName}`, arrayOfFiles);
     } else {
       const ext = path.extname(`${dirPath}/${fileName}`);
-      if (ext === '.js' || ext === '.ts' || ext === '.tsx') {
-        arrayOfFiles.push(path.join(dirPath, '/', fileName));
+      if (ext === ".js" || ext === ".ts" || ext === ".tsx") {
+        arrayOfFiles.push(path.join(dirPath, "/", fileName));
       }
     }
   });
@@ -42,7 +42,10 @@ function getFileList(dirPath: string, arrayOfFiles: string[] = []): string[] {
  * @param fileName
  * @param buffer
  */
-function scanBufferForStyledComponents(fileName: string, buffer: Buffer): fileScanResult {
+function scanBufferForStyledComponents(
+  fileName: string,
+  buffer: Buffer
+): fileScanResult {
   const content = buffer.toString();
   let htmlElementsRestyled = 0;
   let customElementsRestyled = 0;
@@ -51,7 +54,8 @@ function scanBufferForStyledComponents(fileName: string, buffer: Buffer): fileSc
   let match = findStyledUsesRegex.exec(content);
 
   while (match != null) {
-    const elementType = match[1] === '.' ? ElementType.HTML : ElementType.Custom;
+    const elementType =
+      match[1] === "." ? ElementType.HTML : ElementType.Custom;
     const elementName = match[2];
 
     // Increment general match
@@ -84,30 +88,34 @@ const files = getFileList(rootDirectory);
 
 // Scan all found files
 Promise.all(
-  files.map(fileName => {
-    return readFile(fileName).then(buffer => scanBufferForStyledComponents(fileName, buffer));
-  }),
-).then(fileScanResults => {
+  files.map((fileName) => {
+    return readFile(fileName).then((buffer) =>
+      scanBufferForStyledComponents(fileName, buffer)
+    );
+  })
+).then((fileScanResults) => {
   let totalHtmlElementCount = 0;
   let totalCustomElementCount = 0;
   const specificObjects = {};
 
-  fileScanResults.forEach(scanResult => {
+  // Go over each result, and count up totals
+  fileScanResults.forEach((scanResult) => {
     totalHtmlElementCount += scanResult.htmlElementCount;
     totalCustomElementCount += scanResult.customElementCount;
 
-    Object.keys(scanResult.details).forEach(key => {
+    Object.keys(scanResult.details).forEach((key) => {
       if (Object.keys(specificObjects).includes(key)) {
-        specificObjects[key] += 1;
+        specificObjects[key] += scanResult.details[key];
       } else {
-        specificObjects[key] = 1;
+        specificObjects[key] = scanResult.details[key];
       }
     });
   });
 
   // Build a multi-file result
   console.log(`${fileScanResults.length} files scanned`);
-  console.log(`Found ${totalHtmlElementCount} native HTML elements restyled`);
-  console.log(`Found ${totalCustomElementCount} custom elements restyled`);
+  console.log(`Native elements restyled: ${totalHtmlElementCount}`);
+  console.log(`Custom elements restyled: ${totalCustomElementCount}`);
+  console.log("Details...");
   console.log(specificObjects);
 });

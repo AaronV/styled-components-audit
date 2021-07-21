@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc && chmod +x ./build/scan.js",
     "example": "node ./build/scan.js ./example",
-    "dev": "nodemon ./src/scan.ts"
+    "dev": "nodemon ./src/scan.ts ./example"
   },
   "bin": {
     "sc-audit": "./build/scan.js"
