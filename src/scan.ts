@@ -116,7 +116,9 @@ Promise.all(
     key,
     specificObjects[key],
   ]);
-  const sortedDetailsArray = detailsArray.sort((a) => -a[1]);
+  const sortedDetailsArray = detailsArray.sort((a, b) => {
+    return b[1] - a[1];
+  });
 
   // Output Results
   console.log(`${fileScanResults.length} files scanned`);
