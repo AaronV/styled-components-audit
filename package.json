@@ -6,6 +6,9 @@
   "license": "MIT",
   "type": "commonjs",
   "repository": "https://github.com/AaronV/styled-components-auditor",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc && chmod +x ./build/scan.js",
     "example": "node ./build/scan.js ./example",
