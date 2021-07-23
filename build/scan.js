@@ -101,7 +101,9 @@ Promise.all(files.map(function (fileName) {
         key,
         specificObjects[key],
     ]; });
-    var sortedDetailsArray = detailsArray.sort(function (a) { return -a[1]; });
+    var sortedDetailsArray = detailsArray.sort(function (a, b) {
+        return b[1] - a[1];
+    });
     // Output Results
     console.log(fileScanResults.length + " files scanned");
     console.log("Native elements restyled: " + totalHtmlElementCount);
